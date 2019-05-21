@@ -4,12 +4,32 @@ open Revery.UI;
 module Main = {
   let component = React.component("Main");
 
-    let createElement = (~children as _, ~win:_, ()) =>
-      component(hooks => {
-        ignore(win);
-        //let (state, dispatch, hooks) = Hooks.reducer(~initialState = state, reducer, hooks);
-        (hooks, <View />);
-      });
+  let viewStyle =
+    Style.[
+      position(`Absolute),
+      justifyContent(`Center),
+      alignItems(`Center),
+      backgroundColor(Color.rgb(0., 0., 0.)),
+      bottom(0),
+      top(0),
+      left(0),
+      right(0),
+      flexDirection(`Row),
+    ];
+  let textStyle =
+    Style.[
+      color(Colors.white),
+      fontFamily("Roboto-Regular.ttf"),
+      fontSize(24),
+    ];
+
+  let createElement = (~children as _, ()) =>
+    component(hooks => {
+      (hooks,
+        <View style=viewStyle>
+          <Text text="test." style=textStyle/>
+        </View>);
+    });
   };
 
 let init = app => {
@@ -31,7 +51,7 @@ let init = app => {
       "Welcome to Minesweeper!",
     );
 
-  let _ = UI.start(win, <Main win />);
+  let _ = UI.start(win, <Main />);
   ();
 };
 

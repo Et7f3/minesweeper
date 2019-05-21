@@ -1,0 +1,22 @@
+{
+  "name": "minesweeper",
+  "version": "0.0.0",
+  "description": "A minesweeper build with the framework revery",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Et7f3/minesweeper.git"
+  },
+  "keywords": [ "minesweeper", "OCaml", "Reason", "Revery" ],
+  "author": "BRAMI Elie <cadeaudeelie@gmail.com>",
+  "license": "ISC",
+  "resolutions": {
+    "@brisk/brisk-reconciler": "github:briskml/brisk-reconciler#dd933fc",
+    "rebez": "github:jchavarri/rebez#46cbc183"
+  },
+  "esy": {
+    "build": [ "dune build -p Minesweeper -j4" ],
+    "install": [
+      "esy-installer Minesweeper.install"
+    ]
+  }
+}

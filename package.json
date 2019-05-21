@@ -15,8 +15,6 @@
   },
   "esy": {
     "build": [ "dune build -p Minesweeper -j4" ],
-    "install": [
-      "esy-installer Minesweeper.install"
-    ]
+    "install": [ "esy-installer Minesweeper.install" ]
   }
 }

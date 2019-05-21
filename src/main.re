@@ -2,6 +2,10 @@ open Revery;
 open Revery.UI;
 
 module Main = {
+  type state = {
+    frame: int
+  };
+
   let component = React.component("Main");
 
   let viewStyle =
@@ -25,9 +29,11 @@ module Main = {
 
   let createElement = (~children as _, ()) =>
     component(hooks => {
+      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({frame: 0}),
+         (fun(a:_, s) => {frame: s.frame + 1}), hooks);
       (hooks,
         <View style=viewStyle>
-          <Text text="test." style=textStyle/>
+          <Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
         </View>);
     });
   };

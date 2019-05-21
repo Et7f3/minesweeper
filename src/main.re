@@ -27,10 +27,12 @@ module Main = {
       fontSize(24),
     ];
 
+  let reducer = fun(a:_, s) => {frame: s.frame + 1};
+
   let createElement = (~children as _, ()) =>
     component(hooks => {
       let (state, dispatch, hooks) = Hooks.reducer(~initialState=({frame: 0}),
-         (fun(a:_, s) => {frame: s.frame + 1}), hooks);
+         reducer, hooks);
       (hooks,
         <View style=viewStyle>
           <Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>

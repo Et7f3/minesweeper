@@ -1,6 +1,43 @@
 open Revery;
 open Revery.UI;
 
+let () = Random.self_init()
+
+let count_neighbours(matrix, w, h, y, x) =
+    (if (x > 0)
+        ((if (y > 0 && matrix[y - 1][x - 1]) 1 else 0)
+        + (if (matrix[y][x - 1]) 1 else 0)
+        + (if (y < h && matrix[y + 1][x - 1]) 1 else 0))
+    else
+        0)
+    + (if (y > 0 && matrix[y - 1][x]) 1 else 0)
+    + (if (y < h && matrix[y + 1][x]) 1 else 0)
+    + (if (x < w)
+        ((if (y > 0 && matrix[y - 1][x + 1]) 1 else 0)
+        + (if (matrix[y][x + 1]) 1 else 0)
+        + (if (y < h && matrix[y + 1][x + 1]) 1 else 0))
+    else
+        0);
+
+type cell =
+  | Bomb
+  | Hint(int);
+
+let minesweeper = (w, h, percent) => {
+  let percent = 101 - percent;
+  let matrix = Array.make_matrix(w, h, false);
+  let (w, h) = (w - 1, h - 1);
+  let matrix = Array.map(Array.map(_ => Random.int(100) >= percent), matrix); /* fill bomb */
+  let count_neighbours = count_neighbours(matrix, h, w);
+  let make_cell = (i, j) =>
+    fun
+    | true => Bomb
+    | false => Hint(count_neighbours(i, j));
+  let make_row = i => Array.mapi(make_cell(i));
+  let matrix = Array.mapi(make_row, matrix);
+  matrix;
+};
+
 module Main = {
   type state = {
     frame: int

@@ -16,7 +16,7 @@ module Main = {
       top(0),
       left(0),
       right(0),
-      flexDirection(`Row),
+      flexDirection(`Column),
     ];
   let textStyle =
     Style.[
@@ -34,10 +34,9 @@ module Main = {
       (hooks,
         <View style=viewStyle>
           //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
-        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
-        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
-        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
-        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
+          <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
+          <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
+          <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
         </View>);
     });
   };

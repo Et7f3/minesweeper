@@ -11,8 +11,6 @@ module Main = {
   let viewStyle =
     Style.[
       position(`Absolute),
-      justifyContent(`Center),
-      alignItems(`Center),
       backgroundColor(Color.rgb(0., 0., 0.)),
       bottom(0),
       top(0),
@@ -35,7 +33,11 @@ module Main = {
          reducer, hooks);
       (hooks,
         <View style=viewStyle>
-          <Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
+          //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
+        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
+        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
+        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
+        <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell />
         </View>);
     });
   };

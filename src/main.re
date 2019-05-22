@@ -73,12 +73,14 @@ module Main = {
          reducer, hooks);
       (hooks,
         {
-          let row = Array.to_list(Array.mapi((i, _) => <MineCell x=i/>, state.board[0]));
+          let to_row(j, row) = {
+            let row = Array.to_list(Array.mapi((i, _) => <MineCell y=j x=i/>, row));
+            <MineRow> ...row </MineRow>
+          };
+          let rows = Array.to_list(Array.mapi(to_row, state.board));
           <View style=viewStyle>
             //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
-            <MineRow> ...row </MineRow>
-            <MineRow> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> </MineRow>
-            <MineRow> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> </MineRow>
+            ...rows
           </View>
         });
     });

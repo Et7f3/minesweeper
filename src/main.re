@@ -19,9 +19,14 @@ let count_neighbours(matrix, w, h, y, x) =
     else
         0);
 
-type cell =
+type cellType =
   | Bomb
   | Hint(int);
+
+type cell = {
+  opened: bool,
+  cellType: cellType,
+}
 
 let minesweeper = (w, h, percent) => {
   let percent = 101 - percent;
@@ -33,6 +38,7 @@ let minesweeper = (w, h, percent) => {
     fun
     | true => Bomb
     | false => Hint(count_neighbours(i, j));
+  let make_cell(i, j, v) = {opened: false, cellType: make_cell(i, j, v)};
   let make_row = i => Array.mapi(make_cell(i));
   let matrix = Array.mapi(make_row, matrix);
   matrix;
@@ -40,7 +46,7 @@ let minesweeper = (w, h, percent) => {
 
 module Main = {
   type state = {
-    frame: int
+    board: array(array(cell)),
   };
 
   let component = React.component("Main");
@@ -62,11 +68,17 @@ module Main = {
       fontSize(24),
     ];
 
-  let reducer = fun(a:_, s) => {frame: s.frame + 1};
+  let reducer = fun(a:_, s) => {
+    let board = s.board;
+    board[0][0] = {
+      ...(board[0][0]), opened : true
+    };
+    {board: board}
+  };
 
   let createElement = (~children as _, ()) =>
     component(hooks => {
-      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({frame: 0}),
+      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({board: minesweeper(20, 20, 30)}),
          reducer, hooks);
       (hooks,
         <View style=viewStyle>

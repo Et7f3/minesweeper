@@ -69,15 +69,16 @@ module Main = {
 
   let createElement = (~children as _, ()) =>
     component(hooks => {
-      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({board: minesweeper(20, 20, 30)}),
+      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({board: minesweeper(10, 10, 30)}),
          reducer, hooks);
       (hooks,
         {
+          let row = Array.to_list(Array.mapi((i, _) => <MineCell x=i/>, state.board[0]));
           <View style=viewStyle>
             //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
-            <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
-            <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
-            <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
+            <MineRow> ...row </MineRow>
+            <MineRow> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> </MineRow>
+            <MineRow> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> <MineCell x=(-1) /> </MineRow>
           </View>
         });
     });

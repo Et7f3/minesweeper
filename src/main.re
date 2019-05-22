@@ -19,15 +19,6 @@ let count_neighbours(matrix, w, h, y, x) =
     else
         0);
 
-type cellType =
-  | Bomb
-  | Hint(int);
-
-type cell = {
-  opened: bool,
-  cellType: cellType,
-}
-
 let minesweeper = (w, h, percent) => {
   let percent = 101 - percent;
   let matrix = Array.make_matrix(w, h, false);
@@ -36,9 +27,9 @@ let minesweeper = (w, h, percent) => {
   let count_neighbours = count_neighbours(matrix, h, w);
   let make_cell = (i, j) =>
     fun
-    | true => Bomb
-    | false => Hint(count_neighbours(i, j));
-  let make_cell(i, j, v) = {opened: false, cellType: make_cell(i, j, v)};
+    | true => MineCell.Bomb
+    | false => MineCell.Hint(count_neighbours(i, j));
+  let make_cell(i, j, v) = MineCell.{opened: false, cellType: make_cell(i, j, v)};
   let make_row = i => Array.mapi(make_cell(i));
   let matrix = Array.mapi(make_row, matrix);
   matrix;
@@ -46,7 +37,7 @@ let minesweeper = (w, h, percent) => {
 
 module Main = {
   type state = {
-    board: array(array(cell)),
+    board: array(array(MineCell.cell)),
   };
 
   let component = React.component("Main");
@@ -81,12 +72,14 @@ module Main = {
       let (state, dispatch, hooks) = Hooks.reducer(~initialState=({board: minesweeper(20, 20, 30)}),
          reducer, hooks);
       (hooks,
-        <View style=viewStyle>
-          //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
-          <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
-          <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
-          <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
-        </View>);
+        {
+          <View style=viewStyle>
+            //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
+            <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
+            <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
+            <MineRow> <MineCell /> <MineCell /> <MineCell /> <MineCell /> <MineCell /> </MineRow>
+          </View>
+        });
     });
   };
 

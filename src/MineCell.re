@@ -8,6 +8,15 @@ let viewStyle =
     backgroundColor(Color.hex("#ffffff")),
   ];
 
+type cellType =
+  | Bomb
+  | Hint(int);
+
+type cell = {
+  opened: bool,
+  cellType: cellType,
+};
+
 type state = {
   frame: int
 }

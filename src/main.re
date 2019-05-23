@@ -74,7 +74,7 @@ module Main = {
       (hooks,
         {
           let to_row(j, row) = {
-            let row = Array.to_list(Array.mapi((i, _) => <MineCell y=j x=i/>, row));
+            let row = Array.to_list(Array.mapi((i, e) => <MineCell y=j x=i state=e/>, row));
             <MineRow> ...row </MineRow>
           };
           let rows = Array.to_list(Array.mapi(to_row, state.board));

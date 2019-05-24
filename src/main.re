@@ -38,6 +38,9 @@ let minesweeper = (w, h, percent) => {
 module Main = {
   type state = {
     board: array(array(MineCell.cell)),
+    width: int,
+    height: int,
+    ended: bool
   };
 
   let component = React.component("Main");
@@ -67,26 +70,36 @@ module Main = {
         ...(board[j][i]), opened: true
       }
     };
-    {board: board}
+    {...s, board: board}
   };
 
   let createElement = (~children as _, ()) =>
-    component(hooks => {
-      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({board: minesweeper(10, 10, 30),}),
-         reducer, hooks);
-      (hooks,
-        {
-          let to_row(j, row) = {
-            let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={fun() => dispatch((j, i))}/>, row));
-            <MineRow> ...row </MineRow>
-          };
-          let rows = Array.to_list(Array.mapi(to_row, state.board));
-          <View style=viewStyle>
-            //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
-            ...rows
-          </View>
-        });
-    });
+    {
+      let width = 10;
+      let height = 10;
+      let initialState = {
+        board: minesweeper(width, height, 30),
+        width,
+        height,
+        ended: false
+      };
+      component(hooks => {
+        let (state, dispatch, hooks) = Hooks.reducer(~initialState,
+           reducer, hooks);
+        (hooks,
+          {
+            let to_row(j, row) = {
+              let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={fun() => dispatch((j, i))}/>, row));
+              <MineRow> ...row </MineRow>
+            };
+            let rows = Array.to_list(Array.mapi(to_row, state.board));
+            <View style=viewStyle>
+              //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
+              ...rows
+            </View>
+          });
+      });
+    }
   };
 
 let init = app => {

@@ -28,16 +28,6 @@ type cell = {
   cellType: cellType,
 };
 
-
-let component = React.component("MineCell");
-
-let reducer = fun(a:_, s) => {...s, opened: true};
-
-let createElement = (~children as _, ~y, ~x, ~state, ()) =>
-  component(hooks => {
-    let (state, dispatch, hooks) = Hooks.reducer(~initialState=state,
-       reducer, hooks);
-    (hooks,
-      <View style={if (state.opened) openViewStyle else closedViewStyle}>
-      </View>);
-  });
+let createElement = (~children as _, ~state, ~onClick, ()) =>
+  <View style={if (state.opened) openViewStyle else closedViewStyle} onMouseDown={fun(_) => onClick()}>
+  </View>;

@@ -59,22 +59,25 @@ module Main = {
       fontSize(24),
     ];
 
-  let reducer = fun(a:_, s) => {
+  let reducer = fun((j, i), s) => {
     let board = s.board;
-    board[0][0] = {
-      ...(board[0][0]), opened : true
+    let () = flush(stdout);
+    if (!board[j][i].opened) {
+      board[j][i] = {
+        ...(board[j][i]), opened: true
+      }
     };
     {board: board}
   };
 
   let createElement = (~children as _, ()) =>
     component(hooks => {
-      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({board: minesweeper(10, 10, 30)}),
+      let (state, dispatch, hooks) = Hooks.reducer(~initialState=({board: minesweeper(10, 10, 30),}),
          reducer, hooks);
       (hooks,
         {
           let to_row(j, row) = {
-            let row = Array.to_list(Array.mapi((i, e) => <MineCell y=j x=i state=e/>, row));
+            let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={fun() => dispatch((j, i))}/>, row));
             <MineRow> ...row </MineRow>
           };
           let rows = Array.to_list(Array.mapi(to_row, state.board));

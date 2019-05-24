@@ -71,17 +71,20 @@ module Main = {
   let rec propagate_open(board, j, i, h, w) =
     MineCell.(switch (board[j][i].cellType)
     {
-      | Hint(0) => {
+      | Hint(n) => {
           if (!board[j][i].opened)
           {
             show_cell(board, j, i);
-            if (j > 0) propagate_open(board, j - 1, i, h, w);
-            if (j < h) propagate_open(board, j + 1, i, h, w);
-            if (i > 0) propagate_open(board, j, i - 1, h, w);
-            if (i < w) propagate_open(board, j, i + 1, h, w);
+            if (n == 0)
+            {
+              if (j > 0) propagate_open(board, j - 1, i, h, w);
+              if (j < h) propagate_open(board, j + 1, i, h, w);
+              if (i > 0) propagate_open(board, j, i - 1, h, w);
+              if (i < w) propagate_open(board, j, i + 1, h, w);
+            }
           }
         }
-      | Hint(_) | _ => ()
+     | Bomb => ()
     });
 
   let reducer = fun((j, i), s) => {

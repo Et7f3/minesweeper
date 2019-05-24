@@ -62,14 +62,17 @@ module Main = {
       fontSize(24),
     ];
 
+  let show_cell(board, j, i) = MineCell.({
+    board[j][i] = {
+      ...(board[j][i]), opened: true
+    }
+  });
+
   let reducer = fun((j, i), s) => {
     let board = s.board;
     let () = flush(stdout);
-    if (!board[j][i].opened) {
-      board[j][i] = {
-        ...(board[j][i]), opened: true
-      }
-    };
+    if (!board[j][i].opened)
+      show_cell(board, j, i);
     {...s, board: board}
   };
 

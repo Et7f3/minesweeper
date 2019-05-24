@@ -19,6 +19,13 @@ let closedViewStyle =
     ...defaultViewStyle
   ];
 
+let textStyle =
+  Style.[
+    color(Colors.red),
+    fontFamily("Roboto-Regular.ttf"),
+    fontSize(24),
+  ];
+
 type cellType =
   | Bomb
   | Hint(int);
@@ -29,5 +36,13 @@ type cell = {
 };
 
 let createElement = (~children as _, ~state, ~onClick, ()) =>
-  <View style={if (state.opened) openViewStyle else closedViewStyle} onMouseDown={fun(_) => onClick()}>
-  </View>;
+  {
+    let children = switch(state)
+    {
+      | {opened: false} | {cellType: Hint(0), opened: true} => [] // nothing to display
+      | {cellType: Hint(n), opened: true} => [<Text style=textStyle text={string_of_int(n)} />]
+      | {cellType: Bomb, opened: true} => [<Text style=textStyle text="O" />]
+    };
+    <View style={if (state.opened) openViewStyle else closedViewStyle} onMouseDown={fun(_) => onClick()}>
+    ...children</View>
+  };

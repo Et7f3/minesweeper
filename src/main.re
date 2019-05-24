@@ -68,11 +68,27 @@ module Main = {
     }
   });
 
+  let rec propagate_open(board, j, i, h, w) =
+    MineCell.(switch (board[j][i].cellType)
+    {
+      | Hint(0) => {
+          if (!board[j][i].opened)
+          {
+            show_cell(board, j, i);
+            if (j > 0) propagate_open(board, j - 1, i, h, w);
+            if (j < h) propagate_open(board, j + 1, i, h, w);
+            if (i > 0) propagate_open(board, j, i - 1, h, w);
+            if (i < w) propagate_open(board, j, i + 1, h, w);
+          }
+        }
+      | Hint(_) | _ => ()
+    });
+
   let reducer = fun((j, i), s) => {
     let board = s.board;
     let () = flush(stdout);
     if (!board[j][i].opened)
-      show_cell(board, j, i);
+      propagate_open(board, j, i, s.height - 1, s.width - 1);
     {...s, board: board}
   };
 
@@ -81,7 +97,7 @@ module Main = {
       let width = 10;
       let height = 10;
       let initialState = {
-        board: minesweeper(width, height, 30),
+        board: minesweeper(width, height, 10),
         width,
         height,
         ended: false

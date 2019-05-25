@@ -12,7 +12,7 @@ module Main = {
       right(0),
       //flexDirection(`Column), // or `Row
     ];
-  let createElement(~children, ()) = <View style=viewStyle> <Board /> </View>
+  let createElement(~children, ()) = <View style=viewStyle> <Timer /> <Board /> </View>
 };
 
 let init = app => {

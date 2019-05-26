@@ -54,5 +54,6 @@ let rec propagate_open(board, j, i, h, w) =
           }
         }
       }
-   | Bomb => () // we will never be here because they are hint around
+    | Flag // we need to cancel it before automatic open
+    | Bomb => () // we will never be here because they are hint around
   });

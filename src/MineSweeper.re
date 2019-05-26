@@ -139,7 +139,6 @@ let createElement = (~children as _, ()) =>
               ...rows,
             ];
           <View style=viewStyle>
-            //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
             ...rows
           </View>
         });

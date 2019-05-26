@@ -7,6 +7,17 @@ type endCondition =
   | Victory
   | Defeat
 
+let endConditionToColor = fun
+  | No => Colors.white
+  | Victory => Colors.green
+  | Defeat => Colors.red;
+
+
+let endConditionToString = fun
+  | No => ""
+  | Victory => "Well played"
+  | Defeat => "You have loosed";
+
 type state = {
   board: array(array(MineCell.cell)),
   width: int,
@@ -29,7 +40,6 @@ let viewStyle =
 
 let textStyle =
   Style.[
-    color(Colors.white),
     fontFamily("Roboto-Regular.ttf"),
     fontSize(24),
   ];
@@ -115,7 +125,17 @@ let createElement = (~children as _, ()) =>
           let rows = Array.to_list(Array.mapi(toRow, state.board));
           let rows =
             [
-              <Text text={Printf.sprintf("%.0f s", Time.toSeconds(state.time))} style=textStyle />,
+              <MineRow>
+                <Text text={endConditionToString(state.ended)} style=Style.[
+                  width(400),
+                  color(endConditionToColor(state.ended)),
+                  ...textStyle,
+                ] />
+                <Text text={Printf.sprintf("%03.0f s", Time.toSeconds(state.time))} style=Style.[
+                  width(100),
+                  ...textStyle,
+                ] />
+              </MineRow>,
               ...rows,
             ];
           <View style=viewStyle>

@@ -24,6 +24,7 @@ type state = {
   height: int,
   ended: endCondition,
   time: Time.t,
+  numberOfBomb: int
 };
 
 type action =
@@ -86,12 +87,14 @@ let createElement = (~children as _, ()) =>
   {
     let width = 10;
     let height = 10;
+    let (numberOfBomb, board) = minesweeper(width, height, 10);
     let initialState = {
-      board: minesweeper(width, height, 10),
+      board,
       width,
       height,
       ended: No,
       time: Time.ofSeconds(0.),
+      numberOfBomb,
     };
     component(hooks => {
       let (state, dispatch, hooks) = Hooks.reducer(~initialState,
@@ -126,8 +129,13 @@ let createElement = (~children as _, ()) =>
           let rows =
             [
               <MineRow>
+                <Text text={Printf.sprintf("%02d", state.numberOfBomb)} style=Style.[
+                  width(100),
+                  color(Colors.white),
+                  ...textStyle,
+                ] />
                 <Text text={endConditionToString(state.ended)} style=Style.[
-                  width(400),
+                  width(300),
                   color(endConditionToColor(state.ended)),
                   ...textStyle,
                 ] />

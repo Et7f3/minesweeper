@@ -22,14 +22,18 @@ let minesweeper = (w, h, percent) => {
   let (w, h) = (w - 1, h - 1);
   let matrix = Array.map(Array.map(_ => Random.int(100) >= percent), matrix); /* fill bomb */
   let countNeighbours = countNeighbours(matrix, h, w);
+  let numberOfBomb = ref(0);
   let makeCell = (i, j) =>
     fun
-    | true => MineCell.Bomb
+    | true => {
+        numberOfBomb := numberOfBomb^ + 1;
+        MineCell.Bomb
+      }
     | false => MineCell.Hint(countNeighbours(i, j));
   let makeCell(i, j, v) = MineCell.{opened: false, cellType: makeCell(i, j, v)};
   let makeRow = i => Array.mapi(makeCell(i));
   let matrix = Array.mapi(makeRow, matrix);
-  matrix;
+  (numberOfBomb^, matrix);
 };
 
 let showCell(board, j, i) = MineCell.({

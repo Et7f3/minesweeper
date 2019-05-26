@@ -56,7 +56,10 @@ let reducer(a, s) =
       if (s.ended !== No)
           s // Tweak while I learned how to cancel Hook.tick
       else
-        {...s, time: Time.increment(s.time, t)}
+        {
+          ...s,
+          time: Time.increment(s.time, t),
+        }
     }
   | ToogleFlag(j, i) => {
       let board = s.board;
@@ -110,8 +113,11 @@ let createElement = (~children as _, ()) =>
             <MineRow> ...row </MineRow>
           };
           let rows = Array.to_list(Array.mapi(toRow, state.board));
-          let rows = [<Text text={Printf.sprintf("%.0f s", Time.toSeconds(state.time))} style=textStyle />,
-            ...rows];
+          let rows =
+            [
+              <Text text={Printf.sprintf("%.0f s", Time.toSeconds(state.time))} style=textStyle />,
+              ...rows,
+            ];
           <View style=viewStyle>
             //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
             ...rows

@@ -88,7 +88,7 @@ let createElement = (~children as _, ()) =>
       (hooks,
         {
           let to_row(j, row) = {
-            let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={if (!state.ended) (fun() => dispatch(Click(j, i))) else ignore}/>, row));
+            let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={if (!state.ended) (fun() => dispatch(Click(j, i))) else ignore} onOtherClick={if (!state.ended) (fun() => dispatch(ToogleFlag(j, i))) else ignore}/>, row));
             <MineRow> ...row </MineRow>
           };
           let rows = Array.to_list(Array.mapi(to_row, state.board));

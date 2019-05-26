@@ -40,7 +40,12 @@ let show_cell(board, j, i) = MineCell.({
 
 let toogleFlag(board, j, i) = MineCell.({
   board[j][i] = {
-    ...(board[j][i]), cellType: Flag(board[j][i].cellType)
+    ...(board[j][i]),
+    cellType: switch (board[j][i].cellType)
+    {
+      | Flag(v) => v
+      | v => Flag(v)
+    }
   }
 });
 

@@ -13,6 +13,7 @@ type state = {
 type action =
   | Click(int, int)
   | Tick(Time.t)
+  | ToogleFlag(int, int)
 
 let component = React.component("Board");
 
@@ -35,7 +36,6 @@ let reducer(a, s) =
           s // no update
       else {
         let board = s.board;
-        let () = flush(stdout);
         if (board[j][i].cellType === MineCell.Bomb)
           Logic.show_cell(board, j, i)
         else
@@ -43,15 +43,24 @@ let reducer(a, s) =
         {
           ...s,
           board: board,
-          ended: board[j][i].cellType === MineCell.Bomb
+          ended: board[j][i].cellType === MineCell.Bomb,
         }
       }
     }
   | Tick(t) => {
-    if (s.ended)
-        s // Tweak while I learned how to cancel Hook.tick
-    else
-      {...s, time: Time.increment(s.time, t)}
+      if (s.ended)
+          s // Tweak while I learned how to cancel Hook.tick
+      else
+        {...s, time: Time.increment(s.time, t)}
+    }
+  | ToogleFlag(j, i) => {
+      let board = s.board;
+      if (!board[j][i].opened)
+        Logic.toogleFlag(board, j, i);
+      {
+        ...s,
+        board: board,
+      }
   }
 };
 

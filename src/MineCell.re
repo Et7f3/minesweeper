@@ -35,7 +35,7 @@ let textStyle =
 
 type cellType =
   | Bomb
-  | Flag
+  | Flag(cellType)
   | Hint(int);
 
 type cell = {
@@ -47,11 +47,11 @@ let createElement = (~children as _, ~state, ~onClick, ()) =>
   {
     let children = switch(state)
     {
-      | {cellType: Flag} => [<Text style=textStyle text="?" />]
+      | {cellType: Flag(_)} => [<Text style=textStyle text="?" />]
       | {opened: false} | {cellType: Hint(0), opened: true} => [] // nothing to display
       | {cellType: Hint(n), opened: true} => [<Text style=textStyle text={string_of_int(n)} />]
       | {cellType: Bomb, opened: true} => [<Text style=textStyle text="O" />]
     };
-    <View style={if (state.opened) openViewStyle else closedViewStyle} onMouseDown={fun(_) => onClick()}>
+    <View style={if (state.opened) openViewStyle else closedViewStyle} onMouseDown={fun(evt) => if (evt.button == BUTTON_LEFT) onClick()}>
     ...children</View>
   };

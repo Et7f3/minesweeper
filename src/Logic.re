@@ -38,6 +38,12 @@ let show_cell(board, j, i) = MineCell.({
   }
 });
 
+let toogleFlag(board, j, i) = MineCell.({
+  board[j][i] = {
+    ...(board[j][i]), cellType: Flag(board[j][i].cellType)
+  }
+});
+
 let rec propagate_open(board, j, i, h, w) =
   MineCell.(switch (board[j][i].cellType)
   {
@@ -54,6 +60,6 @@ let rec propagate_open(board, j, i, h, w) =
           }
         }
       }
-    | Flag // we need to cancel it before automatic open
+    | Flag(_) // we need to cancel it before automatic open
     | Bomb => () // we will never be here because they are hint around
   });

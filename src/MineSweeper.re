@@ -60,6 +60,8 @@ let createElement = (~children as _, ()) =>
             <MineRow> ...row </MineRow>
           };
           let rows = Array.to_list(Array.mapi(to_row, state.board));
+          let rows = [<Timer />,
+            ...rows];
           <View style=viewStyle>
             //<Text text="test." style=textStyle onMouseDown={fun(_) => dispatch(())}/>
             ...rows

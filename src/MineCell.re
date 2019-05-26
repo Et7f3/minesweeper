@@ -10,14 +10,21 @@ let defaultViewStyle =
 let openViewStyle =
   Style.[
     backgroundColor(Color.hex("#ffffff")),
-    ...defaultViewStyle
+    ...defaultViewStyle,
   ];
 
 let closedViewStyle =
-  Style.[
-    backgroundColor(Color.hex("#000")),
-    ...defaultViewStyle
-  ];
+  {
+    let w = 10;
+    Style.[
+      backgroundColor(Color.hex("#666666")),
+      borderTop(~color=Color.hex("#767676"), ~width=w),
+      borderLeft(~color=Color.hex("#767676"), ~width=w),
+      borderBottom(~color=Color.hex("#565656"), ~width=w),
+      borderRight(~color=Color.hex("#565656"), ~width=w),
+      ...defaultViewStyle,
+    ]
+  };
 
 let textStyle =
   Style.[

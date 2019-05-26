@@ -43,14 +43,20 @@ type cell = {
   cellType: cellType,
 };
 
-let createElement = (~children as _, ~state, ~onClick, ~onOtherClick, ()) =>
+let createElement = (~children as _, ~state, ~finish, ~onClick, ~onOtherClick, ()) =>
   {
     let children = switch(state)
     {
+      | {cellType: Bomb, opened} =>
+        {
+          if (opened || finish)
+            [<Text style=textStyle text="O" />]
+          else
+            []
+        }
       | {cellType: Flag(_)} => [<Text style=textStyle text="?" />]
       | {opened: false} | {cellType: Hint(0), opened: true} => [] // nothing to display
       | {cellType: Hint(n), opened: true} => [<Text style=textStyle text={string_of_int(n)} />]
-      | {cellType: Bomb, opened: true} => [<Text style=textStyle text="O" />]
     };
     <View style={if (state.opened) openViewStyle else closedViewStyle} onMouseDown={fun(evt) => if (evt.button == BUTTON_LEFT) onClick() else onOtherClick()}>
     ...children</View>

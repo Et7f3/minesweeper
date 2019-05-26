@@ -94,7 +94,7 @@ let createElement = (~children as _, ()) =>
         {
           let toRow(j, row) = {
             let row = Array.to_list(Array.mapi((i, e) =>
-              <MineCell state=e
+              <MineCell state=e finish=(state.ended !== No)
                 onClick={
                   if (state.ended === No)
                     (fun() => dispatch(Click(j, i)))

@@ -42,9 +42,9 @@ let reducer(a, s) =
       else {
         let board = s.board;
         if (board[j][i].cellType === MineCell.Bomb)
-          Logic.show_cell(board, j, i)
+          Logic.showCell(board, j, i)
         else
-          Logic.propagate_open(board, j, i, s.height - 1, s.width - 1);
+          Logic.propagateOpen(board, j, i, s.height - 1, s.width - 1);
         {
           ...s,
           board: board,
@@ -92,11 +92,24 @@ let createElement = (~children as _, ()) =>
         }, hooks);
       (hooks,
         {
-          let to_row(j, row) = {
-            let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={if (state.ended === No) (fun() => dispatch(Click(j, i))) else ignore} onOtherClick={if (state.ended === No) (fun() => dispatch(ToogleFlag(j, i))) else ignore}/>, row));
+          let toRow(j, row) = {
+            let row = Array.to_list(Array.mapi((i, e) =>
+              <MineCell state=e
+                onClick={
+                  if (state.ended === No)
+                    (fun() => dispatch(Click(j, i)))
+                  else
+                    ignore
+                  }
+                onOtherClick={
+                  if (state.ended === No)
+                    (fun() => dispatch(ToogleFlag(j, i)))
+                  else
+                    ignore
+                  }/>, row));
             <MineRow> ...row </MineRow>
           };
-          let rows = Array.to_list(Array.mapi(to_row, state.board));
+          let rows = Array.to_list(Array.mapi(toRow, state.board));
           let rows = [<Text text={Printf.sprintf("%.0f s", Time.toSeconds(state.time))} style=textStyle />,
             ...rows];
           <View style=viewStyle>

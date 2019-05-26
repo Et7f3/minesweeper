@@ -22,50 +22,62 @@ let minesweeper = (w, h, percent) => {
   let (w, h) = (w - 1, h - 1);
   let matrix = Array.map(Array.map(_ => Random.int(100) >= percent), matrix); /* fill bomb */
   let countNeighbours = countNeighbours(matrix, h, w);
-  let numberOfBomb = ref(0);
+  let numberOfFlag = ref(0);
   let makeCell = (i, j) =>
     fun
     | true => {
-        numberOfBomb := numberOfBomb^ + 1;
+        numberOfFlag := numberOfFlag^ + 1;
         MineCell.Bomb
       }
     | false => MineCell.Hint(countNeighbours(i, j));
   let makeCell(i, j, v) = MineCell.{opened: false, cellType: makeCell(i, j, v)};
   let makeRow = i => Array.mapi(makeCell(i));
   let matrix = Array.mapi(makeRow, matrix);
-  (numberOfBomb^, matrix);
+  (numberOfFlag^, matrix);
 };
 
-let showCell(board, j, i) = MineCell.({
+let showCell(board, j, i, rmnCell) = {
+  rmnCell := rmnCell^ - 1;
+  MineCell.({
   board[j][i] = {
     ...(board[j][i]), opened: true
   }
-});
+})};
 
-let toogleFlag(board, j, i) = MineCell.({
-  board[j][i] = {
-    ...(board[j][i]),
-    cellType: switch (board[j][i].cellType)
-    {
-      | Flag(v) => v
-      | v => Flag(v)
+let toogleFlag(board, j, i, nbrFlag) = {
+  open MineCell;
+  let cellType = switch (board[j][i].cellType)
+  {
+    | Flag(v) => {
+      nbrFlag := nbrFlag^ + 1;
+      v
+    }
+    | v => {
+      nbrFlag := nbrFlag^ - 1;
+      Flag(v)
+    }
+  };
+  {
+    board[j][i] = {
+      ...(board[j][i]),
+      cellType,
     }
   }
-});
+};
 
-let rec propagateOpen(board, j, i, h, w) =
+let rec propagateOpen(board, j, i, h, w, rmnCell) =
   MineCell.(switch (board[j][i].cellType)
   {
     | Hint(n) => {
         if (!board[j][i].opened)
         {
-          showCell(board, j, i);
+          showCell(board, j, i, rmnCell);
           if (n == 0)
           {
-            if (j > 0) propagateOpen(board, j - 1, i, h, w);
-            if (j < h) propagateOpen(board, j + 1, i, h, w);
-            if (i > 0) propagateOpen(board, j, i - 1, h, w);
-            if (i < w) propagateOpen(board, j, i + 1, h, w);
+            if (j > 0) propagateOpen(board, j - 1, i, h, w, rmnCell);
+            if (j < h) propagateOpen(board, j + 1, i, h, w, rmnCell);
+            if (i > 0) propagateOpen(board, j, i - 1, h, w, rmnCell);
+            if (i < w) propagateOpen(board, j, i + 1, h, w, rmnCell);
           }
         }
       }

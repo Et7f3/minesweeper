@@ -24,7 +24,9 @@ type state = {
   height: int,
   ended: endCondition,
   time: Time.t,
-  numberOfBomb: int
+  numberOfFlag: int,
+  numberOfBomb: int,
+  remainingCell: int,
 };
 
 type action =
@@ -52,14 +54,22 @@ let reducer(a, s) =
           s // no update
       else {
         let board = s.board;
+        let rmnCell = ref(s.remainingCell);
         if (board[j][i].cellType === MineCell.Bomb)
-          Logic.showCell(board, j, i)
+          Logic.showCell(board, j, i, rmnCell)
         else
-          Logic.propagateOpen(board, j, i, s.height - 1, s.width - 1);
+          Logic.propagateOpen(board, j, i, s.height - 1, s.width - 1, rmnCell);
         {
           ...s,
           board: board,
-          ended: if (board[j][i].cellType === MineCell.Bomb) Defeat else No,
+          remainingCell: rmnCell^,
+          ended:
+            if (board[j][i].cellType === MineCell.Bomb)
+              Defeat
+            else if (rmnCell^ === s.numberOfBomb)
+              Victory
+            else
+              No,
         }
       }
     }
@@ -74,11 +84,13 @@ let reducer(a, s) =
     }
   | ToogleFlag(j, i) => {
       let board = s.board;
+      let nbrFlag = ref(s.numberOfFlag);
       if (!board[j][i].opened)
-        Logic.toogleFlag(board, j, i);
+        Logic.toogleFlag(board, j, i, nbrFlag);
       {
         ...s,
         board: board,
+        numberOfFlag: nbrFlag^,
       }
   }
 };
@@ -87,14 +99,16 @@ let createElement = (~children as _, ()) =>
   {
     let width = 10;
     let height = 10;
-    let (numberOfBomb, board) = minesweeper(width, height, 10);
+    let (numberOfFlag, board) = minesweeper(width, height, 10);
     let initialState = {
       board,
       width,
       height,
       ended: No,
       time: Time.ofSeconds(0.),
-      numberOfBomb,
+      numberOfFlag,
+      numberOfBomb: numberOfFlag,
+      remainingCell: width * height,
     };
     component(hooks => {
       let (state, dispatch, hooks) = Hooks.reducer(~initialState,
@@ -129,7 +143,7 @@ let createElement = (~children as _, ()) =>
           let rows =
             [
               <MineRow>
-                <Text text={Printf.sprintf("%02d", state.numberOfBomb)} style=Style.[
+                <Text text={Printf.sprintf("%02d", state.numberOfFlag)} style=Style.[
                   width(100),
                   color(Colors.white),
                   ...textStyle,

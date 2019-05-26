@@ -2,11 +2,16 @@ open Revery;
 open Revery.UI;
 open Logic;
 
+type endCondition =
+  | No
+  | Victory
+  | Defeat
+
 type state = {
   board: array(array(MineCell.cell)),
   width: int,
   height: int,
-  ended: bool,
+  ended: endCondition,
   time: Time.t,
 };
 
@@ -32,7 +37,7 @@ let textStyle =
 let reducer(a, s) =
   switch a {
   | Click(j, i) => {
-      if (s.ended)
+      if (s.ended !== No)
           s // no update
       else {
         let board = s.board;
@@ -43,12 +48,12 @@ let reducer(a, s) =
         {
           ...s,
           board: board,
-          ended: board[j][i].cellType === MineCell.Bomb,
+          ended: if (board[j][i].cellType === MineCell.Bomb) Defeat else No,
         }
       }
     }
   | Tick(t) => {
-      if (s.ended)
+      if (s.ended !== No)
           s // Tweak while I learned how to cancel Hook.tick
       else
         {...s, time: Time.increment(s.time, t)}
@@ -72,14 +77,14 @@ let createElement = (~children as _, ()) =>
       board: minesweeper(width, height, 10),
       width,
       height,
-      ended: false,
+      ended: No,
       time: Time.ofSeconds(0.),
     };
     component(hooks => {
       let (state, dispatch, hooks) = Hooks.reducer(~initialState,
          reducer, hooks);
       let hooks = Hooks.tick(~tickRate=Seconds(1.0), fun(t) => {
-        if (!state.ended)
+        if (state.ended === No)
           {
             // print_endline("I shouln't be fired when state.ended == true");
             dispatch(Tick(t));
@@ -88,7 +93,7 @@ let createElement = (~children as _, ()) =>
       (hooks,
         {
           let to_row(j, row) = {
-            let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={if (!state.ended) (fun() => dispatch(Click(j, i))) else ignore} onOtherClick={if (!state.ended) (fun() => dispatch(ToogleFlag(j, i))) else ignore}/>, row));
+            let row = Array.to_list(Array.mapi((i, e) => <MineCell state=e onClick={if (state.ended === No) (fun() => dispatch(Click(j, i))) else ignore} onOtherClick={if (state.ended === No) (fun() => dispatch(ToogleFlag(j, i))) else ignore}/>, row));
             <MineRow> ...row </MineRow>
           };
           let rows = Array.to_list(Array.mapi(to_row, state.board));

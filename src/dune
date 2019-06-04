@@ -1,4 +1,10 @@
 (executable
  (name main)
  (public_name Minesweeper)
- (libraries Revery))
+ (modules Main)
+ (libraries Minesweeper_lib Revery))
+
+ (library
+  (name Minesweeper_lib)
+  (modules MineSweeper MineRow MineCell Logic)
+  (libraries Revery))

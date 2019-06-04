@@ -6,5 +6,6 @@
 
  (library
   (name Minesweeper_lib)
+  (public_name Minesweeper.lib)
   (modules MineSweeper MineRow MineCell Logic)
   (libraries Revery))

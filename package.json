@@ -17,5 +17,9 @@
     "build": [ "dune build -p Minesweeper -j4" ],
     "install": [ "esy-installer Minesweeper.install" ]
   },
-  "devDependencies": { "@opam/dune": "1.7.3", "revery": "0.23.0" }
+  "dependencies": {
+    "@opam/dune": "1.7.3",
+    "revery": "0.23.0",
+    "@opam/lambda-term": "1.13"
+  }
 }

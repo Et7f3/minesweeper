@@ -95,7 +95,7 @@ let reducer(a, s) =
   }
 };
 
-let createElement = (~children as _, ()) =>
+let createElement = (~children, ()) =>
   {
     let width = 10;
     let height = 10;
@@ -160,6 +160,7 @@ let createElement = (~children as _, ()) =>
               </MineRow>,
               ...rows,
             ];
+          let rows = rows @ children;
           <View style=viewStyle>
             ...rows
           </View>

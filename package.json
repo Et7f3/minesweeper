@@ -14,6 +14,7 @@
     "rebez": "github:jchavarri/rebez#46cbc183"
   },
   "esy": {
+    "buildsInSource": "_build",
     "build": [ "dune build -p Minesweeper -j4" ],
     "install": [ "esy-installer Minesweeper.install" ]
   },

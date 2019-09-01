@@ -12,6 +12,7 @@
   "resolutions": {
     "@brisk/brisk-reconciler": "github:briskml/brisk-reconciler#dd933fc",
     "@opam/camomile": "1.0.1",
+    "rench": "github:revery-ui/rench#455428085fa3d3734685dc08b5acc0282714b366",
     "pesy": "0.4.1",
     "revery": "github:revery-ui/revery#94b0db0fa76ef6712c158d2b4a51271d08bd1c17",
     "@opam/lambda-term": "1.13",

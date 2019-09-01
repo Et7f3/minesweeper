@@ -12,7 +12,7 @@ module Main = {
       right(0),
       //flexDirection(`Column), // or `Row
     ];
-  let createElement(~children, ()) = <View style=viewStyle> <Minesweeper_lib.MineSweeper /> </View>
+  let createElement(~children as _, ()) = <View style=viewStyle> <Minesweeper_lib.MineSweeper /> </View>
 };
 
 let init = app => {
@@ -34,7 +34,7 @@ let init = app => {
       "Welcome to Minesweeper!",
     );
 
-  let _ = UI.start(win, <Main />);
+  let () = UI.start(win, <View />, <Main />);
   ();
 };
 

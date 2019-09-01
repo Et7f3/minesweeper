@@ -54,8 +54,8 @@ let createElement = (~children as _, ~state, ~finish, ~onClick, ~onOtherClick, (
           else
             []
         }
-      | {cellType: Flag(_)} => [<Text style=textStyle text="?" />]
-      | {opened: false} | {cellType: Hint(0), opened: true} => [] // nothing to display
+      | {cellType: Flag(_), _} => [<Text style=textStyle text="?" />]
+      | {opened: false, _} | {cellType: Hint(0), opened: true} => [] // nothing to display
       | {cellType: Hint(n), opened: true} => [<Text style=textStyle text={string_of_int(n)} />]
     };
     <View style={if (state.opened) openViewStyle else closedViewStyle} onMouseDown={fun(evt) => if (evt.button == BUTTON_LEFT) onClick() else onOtherClick()}>

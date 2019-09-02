@@ -18,4 +18,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
+    - name: install libpng and ragel for MacOS
+      if: matrix.os == 'macOS-latest'
+      run: |
+        brew update
+        brew install libpng ragel
     - uses: Et7f3/esy-actions@v1.0.0

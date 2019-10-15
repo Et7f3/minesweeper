@@ -1,6 +1,5 @@
 # esy specific
 _esy
-esy.lock
 node_modules
 
 # opam / dune specific

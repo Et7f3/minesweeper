@@ -10,13 +10,9 @@
   "author": "BRAMI Elie <cadeaudeelie@gmail.com>",
   "license": "ISC",
   "resolutions": {
-    "@brisk/brisk-reconciler": "github:briskml/brisk-reconciler#dd933fc",
-    "@opam/camomile": "1.0.1",
-    "rench": "github:revery-ui/rench#455428085fa3d3734685dc08b5acc0282714b366",
-    "pesy": "0.4.1",
-    "revery": "github:revery-ui/revery#94b0db0fa76ef6712c158d2b4a51271d08bd1c17",
-    "@opam/lambda-term": "1.13",
-    "rebez": "github:jchavarri/rebez#46cbc183"
+    "revery": "github:revery-ui/revery#9f3f41f",
+    "rebez": "github:jchavarri/rebez#46cbc183",
+    "pesy": "0.4.1"
   },
   "esy": {
     "buildsInSource": "_build",
@@ -24,7 +20,7 @@
     "install": [ "esy-installer Minesweeper.install" ]
   },
   "dependencies": {
-    "revery": "0.26.0"
+    "revery": "^0.27.0"
   },
   "devDependencies": {
     "@opam/dune": "^1.7.3"

@@ -16,11 +16,15 @@ module Main = {
 };
 
 let init = app => {
+  /*
   let dimensions: Monitor.size =
     Monitor.getPrimaryMonitor() |> Monitor.getSize;
 
   let windowWidth = dimensions.width / 2;
   let windowHeight = dimensions.height / 2;
+  */
+  let windowWidth = 800;
+  let windowHeight = 480;
 
   let win =
     App.createWindow(
